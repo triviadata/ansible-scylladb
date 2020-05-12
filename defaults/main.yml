@@ -1,0 +1,9 @@
+---
+scylladb_version: 3.3
+scylladb_repository_url: "https://repositories.scylladb.com/scylla/downloads/scylladb/b0701a1f-587f-456f-93f8-e90b889abc31/scylla/rpm/centos/scylladb-{{ scylladb_version }}"
+
+scylla_properties:
+  cluster_name: test_cluster
+  seeds: "{{ inventory_hostname }}"
+
+scylla_developer_mode_enabled: true

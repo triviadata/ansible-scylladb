@@ -1,0 +1,37 @@
+---
+- name: Install epel-release
+  yum:
+    name: epel-release
+
+- name: Setup YUM repository scylla.repo for version {{ scylladb_version }}
+  template:
+    dest: /etc/yum.repos.d/scylla.repo
+    src: scylla.repo.j2
+
+- name: Install scylla
+  yum:
+    name: scylla
+
+- name: Setup properties in scylla.yaml
+  lineinfile:
+    path: /etc/scylla/scylla.yaml
+    backrefs: yes
+    line: "\\2{{ item.key }}: {{ item.value }}"
+    regexp: '^(# )?(\s+-? ?){{ item.key }}:'
+    state: present
+  with_dict: "{{ scylla_properties }}"
+  notify: Retart scylla-server service
+
+- name: Check if developer mode is already enabled
+  shell: "grep -c '^DEV_MODE=*' /etc/scylla.d/dev-mode.conf"
+  register: scylla_dev_enabled
+  changed_when: False
+  failed_when: False
+  check_mode: no
+  when: scylla_developer_mode_enabled
+
+- name: Enable developer mode for scylla
+  command: scylla_dev_mode_setup --developer-mode 1
+  when:
+    - scylla_developer_mode_enabled
+    - scylla_dev_enabled.stdout | int == 0

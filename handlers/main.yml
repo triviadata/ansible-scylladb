@@ -1,0 +1,5 @@
+---
+- name: Retart scylla-server service
+  systemd:
+    state: restarted
+    name: scylla-server

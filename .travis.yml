@@ -1,0 +1,20 @@
+---
+sudo: false
+
+language: python
+
+python: 3.8
+
+services: docker
+
+install:
+  - pip3 install ansible
+  - pip3 install testinfra molecule docker
+
+before_script:
+  - cd ../
+  - mv ansible-scylladb triviadata.scylladb
+  - cd triviadata.scylladb
+
+script:
+  - molecule test

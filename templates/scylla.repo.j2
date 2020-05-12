@@ -1,0 +1,11 @@
+[scylla-{{ scylladb_version }}]
+name=Scylla for Centos - $basearch
+baseurl={{ scylladb_repository_url }}/$basearch/
+enabled=1
+gpgcheck=0
+
+[scylla-generic-{{ scylladb_version }}]
+name=Scylla for centos
+baseurl={{ scylladb_repository_url }}/noarch/
+enabled=1
+gpgcheck=0
