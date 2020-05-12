@@ -7,9 +7,13 @@ python: 3.8
 
 services: docker
 
+env:
+  matrix:
+    - MOLECULE_DISTRO: centos6
+    - MOLECULE_DISTRO: centos7
+
 install:
-  - pip3 install ansible
-  - pip3 install testinfra molecule docker
+  - pip install molecule yamllint ansible-lint docker
 
 before_script:
   - cd ../
